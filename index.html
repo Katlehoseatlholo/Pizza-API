@@ -69,12 +69,19 @@
       this.warningMessage = '';
     } else {
       this.showMessage = true;
-      this.warningMessage = 'Opps not enough cash';
+      this.warningMessage = 'Oops, not enough cash';
       this.successMessage = '';
     }
-  }
+  
+    setTimeout(() => {
+      this.showMessage = false;
+      this.successMessage = '';
+      this.warningMessage = '';
+    }, 3000);
+  },
+
 }"
-x-init="axios.get('https://pizza-api.projectcodex.net/api/pizzas').then( (response)=> { pizzas=response.data.pizzas; });">
+    x-init="axios.get('https://pizza-api.projectcodex.net/api/pizzas').then( (response)=> { pizzas=response.data.pizzas; });">
     <div class="main-container" style='background-color:rgb(216, 193, 63)'>
         <div class="header" style="text-align: center;">
             <h1><b>Pizza e'Vino</b></h1>
@@ -86,6 +93,73 @@ x-init="axios.get('https://pizza-api.projectcodex.net/api/pizzas').then( (respon
 
         </div>
         <hr />
+        
+        <div class="container mt-5" style='background-color:rgb(166, 226, 250)'>
+            <section>
+                <div class="cart-heading" style="text-align: center;">
+                    <h2><b>Cart Summary</b></h2>
+                    <p><b>Quantity:</b> <span x-text="cartQuantity"></span></p>
+                    <p><b>Total: R</b><span x-text="cartTotal.toFixed(2)"></span></p>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-borderless">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template x-for="item in items" :key="item.name">
+                                <tr x-show="item.quantity > 0">
+                                    <td><span x-text="item.name"></span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-secondary"
+                                            @click="removeFromCart(item)">-</button>
+                                        <span x-text="item.quantity"></span>
+                                        <button class="btn btn-sm btn-secondary" @click="addToCart(item)">+</button>
+                                    </td>
+                                    <td><span x-text="(item.price * item.quantity).toFixed(2)"></span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-danger" @click="removeFromCart(item)">Remove from
+                                            Cart</button>
+                                    </td>
+                                </tr>
+                            </template>
+                            <template x-for="item in pizzas" :key="item.id">
+                                <tr x-show="item.quantity > 0">
+                                    <td><span x-text="item.flavour"></span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-secondary"
+                                            @click="removeFromCart(item)">-</button>
+                                        <span x-text="item.quantity"></span>
+                                        <button class="btn btn-sm btn-secondary" @click="addToCart(item)">+</button>
+                                    </td>
+                                    <td><span x-text="(item.price * item.quantity).toFixed(2)"></span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-danger" @click="removeFromCart(item)">Remove from
+                                            Cart</button>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+                <div style="text-align: center;">
+                    <input type="number" min="0" step="10" placeholder="Enter cash amount" x-model.number="cashInput">
+                    <button class="btn btn-primary" @click="validatePayment()">Submit</button>
+                </div>
+                <ul>
+                    <!-- Remaining code for cart items -->
+                </ul>
+                <div x-show="showMessage" class="mt-3">
+                    <div x-show="warningMessage" class="alert alert-danger" role="alert" x-text="warningMessage"></div>
+                    <div x-show="successMessage" class="alert alert-success" role="alert" x-text="successMessage"></div>
+                </div>
+            </section>
+        </div>
         <section
             style="background-image:url(https://img.freepik.com/free-photo/top-view-pepperoni-pizza-with-mushroom-sausages-bell-pepper-olive-corn-black-wooden_141793-2158.jpg?w=826&t=st=1688112705~exp=1688113305~hmac=aae2e102b04d74674f258e2aa93453a708b54d91c35ed18635a939bccb68d2a5)">
             <div class="container">
@@ -109,12 +183,9 @@ x-init="axios.get('https://pizza-api.projectcodex.net/api/pizzas').then( (respon
         </section>
         <hr />
 
-        <section class="Api-list" style="background-color: rgb(111, 159, 221);">
-
+        <section class="Api-list" style="background-color: rgb(184, 208, 240);">
             <h1 style="text-align: center;">Pizza-API Menu</h1>
-
-
-            <div  >
+            <div>
                 <template x-for="pizza in pizzas" :key="pizza.id">
                     <div class="d-flex flex-row  mb-4">
                         <img src="images/462773.jpg" width="230px" height="133px" class="mr-2">
@@ -130,58 +201,7 @@ x-init="axios.get('https://pizza-api.projectcodex.net/api/pizzas').then( (respon
                         </div>
                     </div>
                 </template>
-
             </div>
-
-
-        </section>
-        <div class="container mt-5" style='background-color:rgb(166, 226, 250)'>
-            <section>
-                <h2>Cart</h2>
-                <p>Quantity: <span x-text="cartQuantity"></span></p>
-                <p>Total: R<span x-text="cartTotal.toFixed(2)"></span></p>
-                <ul>
-                    <template x-for="item in items" :key="item.name">
-                        <div class="list" style="margin-bottom: 10px;">
-                            <li x-show="item.quantity > 0">
-                                <span x-text="item.name"></span> -
-                                <button class="btn btn-sm btn-secondary" @click="removeFromCart(item)">-</button>
-                                <span x-text="item.quantity"></span>
-                                <button class="btn btn-sm btn-secondary" @click="addToCart(item)">+</button>
-                                -
-                                <span x-text="(item.price * item.quantity).toFixed(2)"></span>
-                                <button class="btn btn-sm btn-danger" @click="removeFromCart(item)">Remove from
-                                    Cart</button>
-                            </li>
-                        </div>
-                    </template>
-                    <template x-for="item in pizzas" :key="item.id">
-                        <div class="list" style="margin-bottom: 10px;">
-                          <li x-show="item.quantity > 0">
-                            <span x-text="item.flavour"></span> -
-                            <button class="btn btn-sm btn-secondary" @click="removeFromCart(item)">-</button>
-                            <span x-text="item.quantity"></span>
-                            <button class="btn btn-sm btn-secondary" @click="addToCart(item)">+</button>
-                            -
-                            <span x-text="(item.price * item.quantity).toFixed(2)"></span>
-                            <button class="btn btn-sm btn-danger" @click="removeFromCart(item)">Remove from Cart</button>
-                          </li>
-                        </div>
-                      </template>
-                      
-                </ul>
-                <div>
-                    <input type="number" min="0" step="10" placeholder="Enter cash amount" x-model.number="cashInput">
-                    <button class="btn btn-primary" @click="validatePayment()">Submit</button>
-                </div>
-                <ul>
-                    <!-- Remaining code for cart items -->
-                </ul>
-                <div x-show="showMessage" class="mt-3">
-                    <div x-show="warningMessage" class="alert alert-danger" role="alert" x-text="warningMessage"></div>
-                    <div x-show="successMessage" class="alert alert-success" role="alert" x-text="successMessage"></div>
-                </div>
-        </div>
         </section>
         <footer class="footer">
             <div class="footer-div">
