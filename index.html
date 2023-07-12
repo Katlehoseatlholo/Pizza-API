@@ -94,7 +94,7 @@
         </div>
         <hr />
         
-        <div class="container mt-5" style='background-color:rgb(166, 226, 250)'>
+        <div class="container mt-5" style='background-color:rgb(166, 226, 250)' x-show="cartQuantity>0">
             <section>
                 <div class="cart-heading" style="text-align: center;">
                     <h2><b>Cart Summary</b></h2>
@@ -163,7 +163,7 @@
         <section
             style="background-image:url(https://img.freepik.com/free-photo/top-view-pepperoni-pizza-with-mushroom-sausages-bell-pepper-olive-corn-black-wooden_141793-2158.jpg?w=826&t=st=1688112705~exp=1688113305~hmac=aae2e102b04d74674f258e2aa93453a708b54d91c35ed18635a939bccb68d2a5)">
             <div class="container">
-                <h1 style="text-align: center;">MENU</h1>
+                <h1 style="text-align: center; color: rgb(252, 37, 37);">MENU</h1>
                 <div class="row">
                     <template x-for="item in items" :key="item.name">
                         <div class="col-md-4 mb-4">
@@ -183,16 +183,16 @@
         </section>
         <hr />
 
-        <section class="Api-list" style="background-color: rgb(184, 208, 240);">
-            <h1 style="text-align: center;">Pizza-API Menu</h1>
+        <section class="Api-list" style="background-color: rgb(216, 179, 78);">
+            <h1 style="text-align: center; color: rgb(128, 61, 7);">Pizza-API Menu</h1>
             <div>
                 <template x-for="pizza in pizzas" :key="pizza.id">
                     <div class="d-flex flex-row  mb-4">
-                        <img src="images/462773.jpg" width="230px" height="133px" class="mr-2">
+                        <img src="images/pizza.jpg" width="230px" height="133px" class="mr-2">
                         <div class="d-flex flex-column justify-content-between">
                             <h2 class="mr-3" x-text="pizza.flavour"></h2>
                             <h5 class="mr-3" x-text="pizza.type">Type: </h5>
-                            <h5 x-text="pizza.size">Size: </h5>
+                            <h5 x-text="pizza.size" style="color: rgb(28, 54, 2);">Size: </h5>
                         </div>
 
                         <div class="ml-auto">
