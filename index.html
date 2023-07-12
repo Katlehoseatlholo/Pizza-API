@@ -14,155 +14,7 @@
 
     <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
     <script src="//unpkg.com/alpinejs" defer></script>
-    <script>axios.get('https://pizza-api.projectcodex.net/api/pizzas').then((response) => { pizzas = response.data.pizzas; });
-    </script>
-    <style>
-        body {
-
-            background-size: contain;
-            background-position: center;
-
-
-        }
-
-        .header {
-            text-align: center;
-
-            position: relative;
-            top: 0px;
-            background-color: rgb(231, 224, 159);
-            right: 0px;
-        }
-
-        main {
-
-            background-image: url("images/462773.jpg");
-        }
-
-        .menu-container1 {
-            background-color: yellow;
-            display: inline-block;
-            width: 30%;
-            margin: 10px;
-            max-height: fit-content;
-            padding: 10px;
-        }
-
-        .menu-container2 {
-            background-color: orangered;
-            display: inline-block;
-            width: 30%;
-            margin: 10px;
-            max-height: auto;
-            padding: 10px;
-        }
-
-        .footer {
-            background-color: greenyellow;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            font-size: 18px;
-            position: static;
-            bottom: 0;
-            left: 0;
-            right: 0;
-        }
-
-        .footer-div {
-            position: relative;
-            align-items: center;
-        }
-
-        .footer-div i {
-            margin-right: 5px;
-        }
-
-        .footer-div1 {
-            text-align: right;
-        }
-
-
-        .menu-container3 {
-            background-color: rgb(235, 13, 116);
-            display: inline-block;
-            width: 30%;
-            margin: 10px;
-            max-height: auto;
-            padding: 10px;
-        }
-
-        /* CSS for small screens (less than 768px) */
-        @media screen and (max-width: 767px) {
-
-            .menu-container1,
-            .menu-container2,
-            .menu-container3 {
-                display: block;
-                width: 100%;
-            }
-        }
-
-        /* CSS for large screens (960px or wider) */
-        @media screen and (min-width: 960px) {
-
-            .menu-container1,
-            .menu-container2,
-            .menu-container3 {
-                display: inline-block;
-                width: 30%;
-            }
-        }
-
-
-        .image1 {
-            object-fit: fill;
-        }
-
-        .container {
-            display: inline-block;
-            width: 90%;
-            margin: 10px;
-
-            padding: 10px;
-            text-align: center;
-        }
-
-        .image {
-            width: 100%;
-            height: 150px;
-            background-color: white;
-            object-fit: cover;
-            margin-bottom: 10px;
-        }
-
-        .menu-item {
-            font-weight: bold;
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
-
-        .price {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-
-        .est {
-            text-align: center;
-        }
-
-        .description {
-            font-size: 16px;
-        }
-
-        .main-image {
-            min-width: 10%;
-            max-width: 20%;
-            min-height: 10%;
-            max-height: 20%;
-        }
-    </style>
+    <link href="styles.css" type="css">
 </head>
 
 <body x-data="{
@@ -171,25 +23,45 @@
     { name: 'Medium Pizza',description: 'Jallepino flavoured Pizza made by Chef Kay secret sausages-bell', price: 198.99, quantity: 0 },
     { name: 'Large Pizza',description:'Full deluxe cheddar cheese Pizza mushroom-pepper-olive' , price: 289.99, quantity: 0 }
   ],
-  pizza: [],
-  
+  pizzas: [],
+  cartItems: [],
   cartQuantity: 0,
   cartTotal: 0,
   cashInput: 0,
   showMessage: false,
   successMessage: '',
   warningMessage: '',
-  addToCart(item) {
-    item.quantity++;
+  addToCart: function (item) {
+    if (item.quantity === undefined) {
+      item.quantity = 1;
+      this.pizzas.push(item);
+    } else {
+      item.quantity++;
+    }
     this.cartQuantity++;
     this.cartTotal += item.price;
+    this.cartItems.push(item); // Add the item to the cartItems array
   },
   removeFromCart(item) {
-    this.cartTotal -= item.price * item.quantity; // Deduct the total price of the item from the cart total
-    this.cartQuantity -= item.quantity; // Deduct the item quantity from the cart quantity
-    item.quantity = 0; // Set the item quantity to zero
-  }
-  ,
+    this.cartTotal -= item.price * item.quantity;
+    this.cartQuantity -= item.quantity;
+    item.quantity = 0;
+  
+    if (item.quantity === undefined) {
+      // Remove the item from the pizzas array
+      const index = this.pizzas.findIndex(pizza => pizza.id === item.id);
+      if (index !== -1) {
+        this.pizzas.splice(index, 1);
+      }
+    }
+  
+    // Remove the item from the cartItems array
+    const cartIndex = this.cartItems.findIndex(cartItem => cartItem.id === item.id);
+    if (cartIndex !== -1) {
+      this.cartItems.splice(cartIndex, 1);
+    }
+  },
+  
   validatePayment() {
     if (this.cashInput > this.cartTotal) {
       this.showMessage = true;
@@ -201,14 +73,15 @@
       this.successMessage = '';
     }
   }
-}">
+}"
+x-init="axios.get('https://pizza-api.projectcodex.net/api/pizzas').then( (response)=> { pizzas=response.data.pizzas; });">
     <div class="main-container" style='background-color:rgb(216, 193, 63)'>
-        <div class="header">
+        <div class="header" style="text-align: center;">
             <h1><b>Pizza e'Vino</b></h1>
             <p class="est">est 2023</p>
             <!-- Add your main image here -->
 
-            <img class="main-image"
+            <img width="222px" class="main-image"
                 src="https://plus.unsplash.com/premium_photo-1673823195780-8444a76cfde6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80">
 
         </div>
@@ -241,28 +114,23 @@
             <h1 style="text-align: center;">Pizza-API Menu</h1>
 
 
-            <div>
-                <div x-data="{
-                pizzas: []}" x-init="axios.get('https://pizza-api.projectcodex.net/api/pizzas').then( (response)=> { pizzas=response.data.pizzas; });
-                ">
-
-                    <template x-for="pizza in pizzas" :key="pizza.id">
-                        <div class="d-flex flex-row  mb-4">
-                            <img src="images/462773.jpg" width="230px" height="133px" class="mr-2">
-                            <div class="d-flex flex-column justify-content-between">
-                                <h2 class="mr-3" x-text="pizza.flavour"></h2>
-                                <h5 class="mr-3" x-text="pizza.type">Type: </h5>
-                                <h5 x-text="pizza.size">Size: </h5>
-                            </div>
-
-                            <div class="ml-auto">
-                                <h4 >R <span x-text="pizza.price.toFixed(2)"></span></h4>
-                                <button class="btn btn-primary" @click="addToCart(pizza)">ORDER</button>
-                            </div>
+            <div  >
+                <template x-for="pizza in pizzas" :key="pizza.id">
+                    <div class="d-flex flex-row  mb-4">
+                        <img src="images/462773.jpg" width="230px" height="133px" class="mr-2">
+                        <div class="d-flex flex-column justify-content-between">
+                            <h2 class="mr-3" x-text="pizza.flavour"></h2>
+                            <h5 class="mr-3" x-text="pizza.type">Type: </h5>
+                            <h5 x-text="pizza.size">Size: </h5>
                         </div>
-                    </template>
 
-                </div>
+                        <div class="ml-auto">
+                            <h4>R <span x-text="pizza.price.toFixed(2)"></span></h4>
+                            <button class="btn btn-primary" @click="addToCart(pizza)">ORDER</button>
+                        </div>
+                    </div>
+                </template>
+
             </div>
 
 
@@ -287,20 +155,20 @@
                             </li>
                         </div>
                     </template>
-                    <template x-for="item in pizzas" :key="item.flavour">
+                    <template x-for="item in pizzas" :key="item.id">
                         <div class="list" style="margin-bottom: 10px;">
-                            <li >
-                                <span x-text="item.flavour"></span> -
-                                <button class="btn btn-sm btn-secondary" @click="removeFromCart(item)">-</button>
-                                <span x-text="item.quantity"></span>
-                                <button class="btn btn-sm btn-secondary" @click="addToCart(item)">+</button>
-                                -
-                                <span x-text="(item.price * item.quantity).toFixed(2)"></span>
-                                <button class="btn btn-sm btn-danger" @click="removeFromCart(item)">Remove from
-                                    Cart</button>
-                            </li>
+                          <li x-show="item.quantity > 0">
+                            <span x-text="item.flavour"></span> -
+                            <button class="btn btn-sm btn-secondary" @click="removeFromCart(item)">-</button>
+                            <span x-text="item.quantity"></span>
+                            <button class="btn btn-sm btn-secondary" @click="addToCart(item)">+</button>
+                            -
+                            <span x-text="(item.price * item.quantity).toFixed(2)"></span>
+                            <button class="btn btn-sm btn-danger" @click="removeFromCart(item)">Remove from Cart</button>
+                          </li>
                         </div>
-                    </template>
+                      </template>
+                      
                 </ul>
                 <div>
                     <input type="number" min="0" step="10" placeholder="Enter cash amount" x-model.number="cashInput">

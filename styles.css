@@ -1,0 +1,127 @@
+body {
+  background-size: contain;
+  background-position: center;
+}
+.header {
+  text-align: center;
+}
+
+.menu-container1 {
+  background-color: yellow;
+  display: inline-block;
+  width: 30%;
+  margin: 10px;
+  max-height: fit-content;
+  padding: 10px;
+}
+
+.menu-container2 {
+  background-color: orangered;
+  display: inline-block;
+  width: 30%;
+  margin: 10px;
+  max-height: auto;
+  padding: 10px;
+}
+
+.footer {
+  background-color: greenyellow;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  font-size: 18px;
+  position: static;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.footer-div {
+  position: relative;
+  align-items: center;
+}
+
+.footer-div i {
+  margin-right: 5px;
+}
+
+.footer-div1 {
+  text-align: right;
+}
+
+.menu-container3 {
+  background-color: rgb(235, 13, 116);
+  display: inline-block;
+  width: 30%;
+  margin: 10px;
+  max-height: auto;
+  padding: 10px;
+}
+
+/* CSS for small screens (less than 768px) */
+@media screen and (max-width: 767px) {
+  .menu-container1,
+  .menu-container2,
+  .menu-container3 {
+    display: block;
+    width: 100%;
+  }
+}
+
+/* CSS for large screens (960px or wider) */
+@media screen and (min-width: 960px) {
+  .menu-container1,
+  .menu-container2,
+  .menu-container3 {
+    display: inline-block;
+    width: 30%;
+  }
+}
+
+.image1 {
+  object-fit: fill;
+}
+
+.container {
+  display: inline-block;
+  width: 90%;
+  margin: 10px;
+
+  padding: 10px;
+  text-align: center;
+}
+
+.image {
+  width: 100%;
+  height: 150px;
+  background-color: white;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.menu-item {
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.price {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.est {
+  text-align: center;
+}
+
+.description {
+  font-size: 16px;
+}
+
+.main-image {
+  min-width: 10%;
+  max-width: 20%;
+  min-height: 10%;
+  max-height: 20%;
+}
