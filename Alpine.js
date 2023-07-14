@@ -23,7 +23,6 @@ document.addEventListener("alpine:init", () => {
         },
       ],
       pizzas: [],
-      userName: "KatlehoSeatlholo",
       cartItems: [],
       cartQuantity: 0,
       cartTotal: 0,
@@ -39,7 +38,7 @@ document.addEventListener("alpine:init", () => {
           item.quantity++;
         }
         this.cartQuantity++;
-        this.cartTotal += item.price.toFixed(2);
+        this.cartTotal += item.price;
         this.cartItems.push(item); // Add the item to the cartItems array
       },
       removeFromCart(item) {

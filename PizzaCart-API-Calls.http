@@ -47,11 +47,11 @@ content-type: application/json
 
 ### GET all the carts for a given user
 
-GET https://pizza-api.projectcodex.net/api/pizza-cart/username/Sabelo
+GET https://pizza-api.projectcodex.net/api/pizza-cart/username/Katlehoseatlholo
 
 ### GET all the active carts for a user
 
-GET https://pizza-api.projectcodex.net/api/pizza-cart/username/Sabelo/active
+GET https://pizza-api.projectcodex.net/api/pizza-cart/username/Katlehoseatlholo/active
 
 
 ### Pay for a pizza from the cart
