@@ -30,7 +30,7 @@
 
         </div>
         <hr />
-        
+
         <div class="container mt-5" style='background-color:rgb(166, 226, 250)' x-show="cartQuantity>0">
             <section>
                 <div class="cart-heading" style="text-align: center;">
@@ -119,17 +119,16 @@
             </div>
         </section>
         <hr />
-
-        <section class="Api-list" style="background-color: rgb(216, 179, 78);">
-            <h1 style="text-align: center; color: rgb(128, 61, 7);">Pizza-API Menu</h1>
+        <section class="Api-list bg-warning">
+            <h1 class="text-center text-primary">Pizza-API Menu</h1>
             <div>
                 <template x-for="pizza in pizzas" :key="pizza.id">
-                    <div class="d-flex flex-row  mb-4">
+                    <div class="d-flex flex-row mb-4">
                         <img src="images/pizza.jpg" width="230px" height="133px" class="mr-2">
                         <div class="d-flex flex-column justify-content-between">
                             <h2 class="mr-3" x-text="pizza.flavour"></h2>
-                            <h5 class="mr-3" x-text="pizza.type">Type: </h5>
-                            <h5 x-text="pizza.size" style="color: rgb(28, 54, 2);">Size: </h5>
+                            <h5 class="mr-3">Type: <span x-text="pizza.type"></span></h5>
+                            <h5 style="color: rgb(28, 54, 2);">Size: <span x-text="pizza.size"></span></h5>
                         </div>
 
                         <div class="ml-auto">
@@ -140,6 +139,7 @@
                 </template>
             </div>
         </section>
+
         <footer class="footer">
             <div class="footer-div">
 
