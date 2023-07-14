@@ -1,5 +1,5 @@
 document.addEventListener("alpine:init", () => {
-  Alpine.data("pizzaCartWithAPIWidget",  ()=> {
+  Alpine.data("pizzaCartWithAPIWidget", () => {
     return {
       items: [
         {
@@ -23,8 +23,10 @@ document.addEventListener("alpine:init", () => {
         },
       ],
       pizzas: [],
+      userName: "Katlehoseatlholo",
       cartItems: [],
       cartQuantity: 0,
+      showCartSection: false,
       cartTotal: 0,
       cashInput: 0,
       showMessage: false,
@@ -61,6 +63,9 @@ document.addEventListener("alpine:init", () => {
         if (cartIndex !== -1) {
           this.cartItems.splice(cartIndex, 1);
         }
+      },
+      showCart() {
+        this.showCartSection = !showCartSection;
       },
 
       validatePayment() {
